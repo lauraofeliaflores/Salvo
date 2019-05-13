@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head>
+    <title>Salvo</title>
+</head>
+<body>
+
+
+<div id="login-form">
+    <form v-show="!currentUser"  @submit.prevent="login">
+        <label>Name: <input type="text" name="email" v-model="email"></label>
+        <label>Password: <input type="password" name="password" v-model="password"></label>
+        <button type="text">login</button>
+        <label v-show="error" style="display:none">Usuario y/o contraseña incorrectos</label>
+        <a href="../web/register.html">Registrarse</a>
+    </form>
+    <form v-show="currentUser"  @submit.prevent="logout" style="display:none">
+        <label>{{currentUser}}</label>
+        <button type="submit">logout</button>
+    </form>
+</div>
+
+<div id="appVue">
+    <div class="row">
+        <div class="col-sm-8">
+            <h4 class="font-weight-bold">Tabla de Clasificación</h4>
+            <table id="data" class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Total</th>
+                    <th>Victorias</th>
+                    <th>Derrotas</th>
+                    <th>Empates</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="score in scores ">
+                        <td>{{score.name}}</td>
+                        <td>{{score.total}}</td>
+                        <td>{{score.victorias}}</td>
+                        <td>{{score.derrotas}}</td>
+                        <td>{{score.empates}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <ol class="list-group">
+        <button  v-if="currentUser" v-on:click="crearJuego()">Create Game</button>
+        <li class="list-group-item" v-for="game in lists" >
+            Id:{{ game.id }}
+            createdDate:{{ game.created  }}
+                <button v-if="currentUser && hayLugarEnElJuegoYNoEstaElUsuarioActual(game)" v-on:click="unirteAlJuego(game.id)">Unirte al juego</button>
+                <button v-if="currentUser && obtenerGamePlayerParaUsuarioActual(game)" v-on:click="returnToGame(game)">Volver al juego</button>
+                <br>
+            Game Players:
+            <ol class="list-group">
+                <li class="list-group-item" v-for="gamePlayer in game.gamePlayers" >
+
+                    Player:{{ gamePlayer.player.id }}
+                    Email:{{ gamePlayer.player.email }}
+                    FinishDate:{{ gamePlayer.player.finishDate }}
+
+
+                </li>
+            </ol>
+            <br>
+        </li>
+    </ol>
+  <!--  <div class="col-xs-12">
+        <hr>
+        <pre>
+            {{ $data }}
+        </pre>
+    </div>-->
+
+</div>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
+
+
+
+
+<script src="games.js"></script>
+
+
+
+</body>
+
+
+
+</html>

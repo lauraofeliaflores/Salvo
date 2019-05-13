@@ -1,0 +1,77 @@
+.grid-stack-item-content {
+    opacity: 0.9;
+    background-repeat: no-repeat;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    width: -webkit-fill-available!important;
+    left: 0px !important;
+}
+
+.portaavionesHorizontal{
+    background-image: url('submarinehor.png');
+    background-size: contain;
+}
+
+.portaavionesVertical{
+    background-image: url('submarinever.png');
+    background-size: contain;
+}
+
+.acorazadoHorizontal{
+    background-image: url('submarinehor.png');
+    background-size: contain;
+}
+
+.acorazadoVertical{
+    background-image: url('submarinever.png');
+    background-size: contain;
+}
+
+.submarinoHorizontal{
+  background-image: url('submarinehor.png');
+  background-size: contain;
+}
+.submarinoVertical{
+   background-image: url('submarinever.png');
+   background-size: contain;
+}
+.destructorHorizontal{
+  background-image: url('submarinehor.png');
+  background-size: contain;
+}
+.destructorVertical{
+   background-image: url('submarinever.png');
+   background-size: contain;
+}
+.botePatrullaHorizontal{
+  background-image: url('submarinehor.png');
+  background-size: contain;
+}
+.botePatrullaVertical{
+   background-image: url('submarinever.png');
+   background-size: contain;
+}
+
+
+.portaavionesportaavionesHorizontalHorizontalRed{
+    background-image: url('submarinehor_red.png');
+    background-size: 100% 100%;
+}
+
+.patroalHorizontal{
+    background-image: url('patrolboathor.png');
+    background-size: contain;
+}
+
+.patroalHorizontalRed{
+    background-image: url('patrolboathor_red.png');
+    background-size: 100% 100%;
+}
+
+
+.grid-ships{
+    padding-top: 42px;
+    padding-left: 42px;
+    height: 452px;
+    width: 452px;
+}

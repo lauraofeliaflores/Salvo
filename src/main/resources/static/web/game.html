@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns: xmlns:>
+<head>
+    <link rel="stylesheet" href="dist/normalize.css" />
+    <link rel="stylesheet" href="dist/gridstack.css" />
+    <link rel="stylesheet" href="dist/gridstack-extra.css" />
+    <link rel="stylesheet" href="dist/style.css" />
+    <link rel="stylesheet" href="cssGames/estiloGames.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+</head>
+<body>
+<div id="login-form">
+    <form v-show="currentUser"  @submit.prevent="logout" style="display:none">
+        <label>{{currentUser}}</label>
+        <button type="submit">logout</button>
+    </form>
+</div>
+<div id="app"class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6" >
+            <div>
+                <h4>ship grid</h4>
+                <p>{{player.email}} vs. {{opponent.email}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6" >
+            <div >
+                <h4>salvo grid</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" >
+            <!-- div solo para colocar el borde y posicionar en base a la altura y anchura-->
+            <div id="grid-board" class="grid-ships" >
+                <div id="grid" class="grid-stack grid-stack-10"></div>
+            </div>
+
+            <button v-if="current"   v-on:click="agregarShips(gamePlayerId)">agregar ships</button>
+        </div>
+        <div class="col-sm-6" >
+            <!-- div solo para colocar el borde y posicionar en base a la altura y anchura-->
+            <div id="gridSalvoes" class="grid-ships">
+                <!-- div que usa la librería gridstack grid-stack-10 se indica que son 10 columnas-->
+                <div id="gridSalvo" class="grid-stack grid-stack-10"></div>
+            </div>
+            <button   v-on:click="agregarSalvos(gamePlayerId)">agregar salvos</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <table id="data" class="table">
+                <thead>
+                <tr>
+                    <th>Turn</th>
+                    <th>Hits on you</th>
+                    <th>Sinks on you</th>
+                    <th>Hits on opponent</th>
+                    <th>Sinks on opponent</th>
+
+                </tr>
+                </thead>
+                   <tbody>
+                      <tr v-for="data in tabla">
+                           <td>{{data.turn}}</td>
+                           <td>{{data.hitsP}}</td>
+                           <td>{{data.sinkP}}</td>
+                           <td>{{data.hitsE}}</td>
+                           <td>{{data.sinkE}}</td>
+                       </tr>
+                   </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<!-- libreria y demás dependencias-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+<script src="dist/jquery-ui.min.js"></script>
+<script src="dist/gridstack.js"></script>
+<script src="dist/gridstack.jQueryUI.js"></script>
+<script src="dist/jquery.ui.touch-punch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
+<script src="game.js"></script>
+</body>
+
+</html>

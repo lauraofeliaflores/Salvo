@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<head>
+    <title>Salvo</title>
+</head>
+<body>
+
+
+<div id="register-form">
+    <form @submit.prevent="register">
+        <label>Name: <input type="text" name="email" v-model="email"></label>
+        <label>Password: <input type="password" name="password" v-model="password"></label>
+        <button type="submit">register</button>
+        <label v-show="error" style="display:none">Error</label>
+        <a href="../web/games.html">volver</a>
+    </form>
+</div>
+
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
+<script src="register.js"></script>
+
+
+
+</body>
+
+</html>
