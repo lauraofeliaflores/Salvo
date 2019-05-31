@@ -82,7 +82,7 @@ var login = new Vue({
 
 $(function(){
 
-var games = "http://localhost:8080/api/Games";
+var games = "/api/Games";
 
 fetch(games,{
     method: 'GET'
