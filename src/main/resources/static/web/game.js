@@ -11,7 +11,9 @@ var app = new Vue({
     gamePlayerId: 0,
     current:'true',
     salvosCount: 0,
-    tabla:[]
+    tabla:[],
+    interval : null,
+    estadoActual : ""
   },
   methods: {
     agregarShips: function(gamePlayerId) {
@@ -24,6 +26,7 @@ var app = new Vue({
         this.$http.post("/api/games/players/"+gamePlayerId+"/ships",JSON.stringify(ships))
             .then(response => {
                  window.location.href = "../web/game.html?gp="+gamePlayerId;
+
             });
 
     },
@@ -57,6 +60,7 @@ var login = new Vue({
          lists: [],
 
     },
+
     methods: {
         logout: function logout() {
                        this.$http.post('/api/logout')
@@ -64,7 +68,7 @@ var login = new Vue({
                                   window.location.href='/web/games.html';
                                 }, response => {
                                 });
-                       },
+                       }
     }
 });
 
@@ -87,7 +91,27 @@ var login = new Vue({
 
   });
 
-$(function(){
+$(cargarPagina);
+
+function cargarPagina(){
+    cargarDatos();
+    $("#gridSalvoes").click(function(e){
+            if(gameData.estadoGame == "JUGAR_TURNO" ){
+               var parentOffset = $(this).offset();
+               //or $(this).offset(); if you really just want the current element's offset
+               var relX = e.pageX - parentOffset.left;
+               var relY = e.pageY - parentOffset.top;
+               addSalvo(gridSalvo,grid.getCellFromPixel({top:relY , left:relX}));
+            }
+        });
+}
+
+function cargarDatos(){
+
+//setInterval(function() { window.location.reload() }, 5000);
+
+
+//propiedad que le indicará la ubicación actual de URL del navegador. Cambiar el valor de la propiedad redireccionará la página.
 app.gamePlayerId = paramObj(window.location.href).gp
 
 
@@ -104,33 +128,48 @@ fetch(games,{
       }).then(function(json){
 
       gameData = json;
-      information(app.gamePlayerId)
-      createGrid()
+      app.estadoActual = gameData.estadoGame;
+      if(app.inteval == null){
+          if(gameData.estadoGame != "COLOCAR_FICHAS" && gameData.estadoGame != "JUGAR_TURNO"){
+            app.inteval = setInterval(cargarDatos,5000);
+          }
+      }else{
+        if(gameData.estadoGame == "COLOCAR_FICHAS" || gameData.estadoGame == "JUGAR_TURNO"){
+            clearInterval(app.inteval);
+            app.inteval = null;
+         }
+         else{
+            if(app.inteval == null)
+                app.inteval = setInterval(cargarDatos,5000);
+         }
+      }
+
+      information(app.gamePlayerId);
+      createGrid();
       shipsState();
 
   }).catch(function(error){
     console.log(error)
   })
-});
+}
 
 function shipsState(){
-    var filas = [];
-
+    app.tabla = [];
     gameData.salvoes.forEach(function(salvo){
-        var actual = filas.findIndex(elem => elem.turn === salvo.turn);
+        var actual = app.tabla.findIndex(elem => elem.turn === salvo.turn);
 
         if (actual>=0){
-            if (salvo.player.email == login.currentUser) {
-                filas[actual].hitsP = salvo.hits.length;
-                filas[actual].sinkP = salvo.sink.length;
+            if (salvo.player.email == app.player.email) {
+                app.tabla[actual].hitsP = salvo.hits.length;
+                app.tabla[actual].sinkP = salvo.sink.length;
             } else {
-                filas[actual].hitsE = salvo.hits.length;
-                filas[actual].sinkE = salvo.sink.length;
+                app.tabla[actual].hitsE = salvo.hits.length;
+                app.tabla[actual].sinkE = salvo.sink.length;
             }
         } else {
             var fila = {};
             fila.turn = salvo.turn;
-            if (salvo.player.email == login.currentUser) {
+            if (salvo.player.email == app.player.email) {
                 fila.hitsP = salvo.hits.length;
                 fila.sinkP = salvo.sink.length;
                 fila.hitsE = null;
@@ -142,29 +181,13 @@ function shipsState(){
                 fila.sinkP = null;
             }
             app.tabla.push(fila);
-            filas.push(fila);
         }
     });
 
-    console.log(filas);
+    console.log(app.tabla);
 
 }
 
-//////////////////////////
-/*function shipsState(){
-var salvoesOrdenado = gameData.salvoes;
-
-salvoesOrdenado.sort(function (a, b) {
-  if (a.turn> b.turn) {
-        return 1;
-      }
-  if (a.turn < b.turn) {
-        return -1;
-      }
-      return 0;
-    });
-
-*/
 
 
 
@@ -233,9 +256,13 @@ function getSalvoLocations(){
         var x =  +(location.slice(1))-1;
         var y = toIntGridStack((location.slice(0,1)));
 
-
-        gridSalvo.addWidget($('<div id="'+salvo.turn+'"><div class="grid-stack-item-content shoot">'+salvo.turn+'</div><div/>'),
+        if(salvo.hits.indexOf(location) != -1)
+            gridSalvo.addWidget($('<div id="'+salvo.turn+'"><div class="grid-stack-item-content shootFire">'+salvo.turn+'</div><div/>'),
+                              x, y, 1, 1);
+        else
+            gridSalvo.addWidget($('<div id="'+salvo.turn+'"><div class="grid-stack-item-content shoot">'+salvo.turn+'</div><div/>'),
                       x, y, 1, 1);
+
       })
     })
 }
@@ -245,6 +272,8 @@ function getOpponentTurn() {
     var opponentSalvoes = (app.opponentSalvoes || []);
     var ships = gameData.Ships;
 
+    $(".enemyShoot").remove();
+
     opponentSalvoes.forEach(function (salvo){
       salvo.locations.forEach(function (location){
         var xSalvo =  +(location.slice(1)) - 1;
@@ -252,9 +281,9 @@ function getOpponentTurn() {
         ships.forEach(function (ship){
               ship.cells.forEach(function (cell){
                 var xBarco = +(cell.slice(1))- 1;
-                var yBarco = Math.abs(toInt((cell.slice(0,1))));
+                var yBarco = Math.abs(toInt((cell.slice(0,1))));                                                    //         ' +salvo.turn+ '
                 if(xSalvo == xBarco && ySalvo == yBarco){
-                   $('#grid-board').append('<div class="enemyShoot" style="top:'+(ySalvo)*40+'px; left:'+(xSalvo+1)*40+'px;">'+salvo.turn+'</div>');
+                   $('#grid-board').append('<div class="enemyShoot" style="top:'+(ySalvo)*41+'px; left:'+(xSalvo+1)*41+'px;"></div>');
                 }
               });
         });
@@ -342,23 +371,15 @@ function createGrid () {
     //se inicializa el grid con las opciones
     $('#grid').gridstack(options);
     grid = $('#grid').data('gridstack');
+    grid.removeAll();
 
     $('#gridSalvo').gridstack(options);
     gridSalvo = $('#gridSalvo').data('gridstack');
-
+    gridSalvo.removeAll();
 
     getShipsLocations();
     getSalvoLocations();
     getOpponentTurn();
-
-    $("#gridSalvoes").click(function(e){
-       var parentOffset = $(this).offset();
-       //or $(this).offset(); if you really just want the current element's offset
-       var relX = e.pageX - parentOffset.left;
-       var relY = e.pageY - parentOffset.top;
-
-       addSalvo(gridSalvo,grid.getCellFromPixel({top:relY , left:relX}));
-    });
 
 }
 
@@ -437,7 +458,7 @@ function addSalvo(gridSalvo,position) {
 
      if(gridSalvo.isAreaEmpty(position.x, position.y, 1, 1)){
         if(app.salvosCount < 5 && position.y != -1 &&  position.x != -1) {
-          gridSalvo.addWidget($('<div><div class="grid-stack-item-content newShoot">0</div><div/>'),position.x, position.y, 1, 1,false);
+          gridSalvo.addWidget($('<div><div class="grid-stack-item-content newShoot"></div><div/>'),position.x, position.y, 1, 1,false);
           app.salvosCount++;
          }
       }
@@ -491,7 +512,7 @@ function toCoordenada(x, y) {
 
 
 function getSalvoCell(salvo){
-    var x = salvo.x;
+    var x = salvo.x; /// salvo.xBarco?????
     var y = salvo.y;
    return toCoordenada(x,y);
 }
@@ -536,3 +557,21 @@ function getSalvoCell(salvo){
             //console.log(grid.isAreaEmpty(1, 8, 3, 1));
             //está libre, true
             //console.log(grid.isAreaEmpty(1, 7, 3, 1));
+
+
+
+            //////////////////////////
+            /*function shipsState(){
+            var salvoesOrdenado = gameData.salvoes;
+
+            salvoesOrdenado.sort(function (a, b) {
+              if (a.turn> b.turn) {
+                    return 1;
+                  }
+              if (a.turn < b.turn) {
+                    return -1;
+                  }
+                  return 0;
+                });
+
+            */

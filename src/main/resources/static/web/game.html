@@ -11,6 +11,7 @@
 
 </head>
 <body>
+
 <div id="login-form">
     <form v-show="currentUser"  @submit.prevent="logout" style="display:none">
         <label>{{currentUser}}</label>
@@ -21,66 +22,74 @@
     <div class="row">
         <div class="col-sm-6" >
             <div>
-                <h4>ship grid</h4>
+              <!--  <h4>ship grid</h4> -->
                 <p>{{player.email}} vs. {{opponent.email}}</p>
+                <p>{{estadoActual}}</p>
             </div>
         </div>
         <div class="col-sm-6" >
-            <div >
+           <!-- <div >
                 <h4>salvo grid</h4>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6" >
+        <div class="col-sm-6"  >
+
             <!-- div solo para colocar el borde y posicionar en base a la altura y anchura-->
-            <div id="grid-board" class="grid-ships" >
-                <div id="grid" class="grid-stack grid-stack-10"></div>
-            </div>
+            <!--   <div style="background-image: url('giphy.gif');background-position: center; background-repeat: no-repeat; background-size: cover;"> -->
+                   <div id="grid-board" class="grid-ships" >
+                       <div id="grid" class="grid-stack grid-stack-10"></div>
+                   </div>
+            <!--      </div>-->
 
-            <button v-if="current"   v-on:click="agregarShips(gamePlayerId)">agregar ships</button>
-        </div>
-        <div class="col-sm-6" >
-            <!-- div solo para colocar el borde y posicionar en base a la altura y anchura-->
-            <div id="gridSalvoes" class="grid-ships">
-                <!-- div que usa la librería gridstack grid-stack-10 se indica que son 10 columnas-->
-                <div id="gridSalvo" class="grid-stack grid-stack-10"></div>
-            </div>
-            <button   v-on:click="agregarSalvos(gamePlayerId)">agregar salvos</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <table id="data" class="table">
-                <thead>
-                <tr>
-                    <th>Turn</th>
-                    <th>Hits on you</th>
-                    <th>Sinks on you</th>
-                    <th>Hits on opponent</th>
-                    <th>Sinks on opponent</th>
+               <button id="botonAgregarShips" v-if="current"   v-on:click="agregarShips(gamePlayerId)">
+                   add boats</button>
+           </div>
+           <div class="col-sm-6" >
+               <!-- div solo para colocar el borde y posicionar en base a la altura y anchura-->
+               <!--       <div style="background-image: url('giphy.gif');background-position: center; background-repeat: no-repeat; background-size: cover;">-->
+               <div id="gridSalvoes" class="grid-ships">
+                       <!-- div que usa la librería gridstack grid-stack-10 se indica que son 10 columnas-->
+                    <div id="gridSalvo" class="grid-stack grid-stack-10"></div>
+                </div>
+               <!--  </div>-->
 
-                </tr>
-                </thead>
-                   <tbody>
-                      <tr v-for="data in tabla">
-                           <td>{{data.turn}}</td>
-                           <td>{{data.hitsP}}</td>
-                           <td>{{data.sinkP}}</td>
-                           <td>{{data.hitsE}}</td>
-                           <td>{{data.sinkE}}</td>
-                       </tr>
-                   </tbody>
-            </table>
-        </div>
+               <button  v-if="estadoActual == 'JUGAR_TURNO'" v-on:click="agregarSalvos(gamePlayerId)">Shoot</button>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-sm-8">
+             <table id="data" class="table score">
+                 <thead>
+                 <tr>
+                     <th>Turn</th>
+                     <th>Hits on you</th>
+                     <th>Sinks on you</th>
+                     <th>Hits on opponent</th>
+                     <th>Sinks on opponent</th>
 
-    </div>
+                 </tr>
+                 </thead>
+                    <tbody>
+                       <tr v-for="data in tabla">
+                            <td>{{data.turn}}</td>
+                            <td>{{data.hitsP}}</td>
+                            <td>{{data.sinkP}}</td>
+                            <td>{{data.hitsE}}</td>
+                            <td>{{data.sinkE}}</td>
+                        </tr>
+                    </tbody>
+             </table>
+         </div>
+
+     </div>
 
 
 
-</div>
+ </div>
 
-<!-- libreria y demás dependencias-->
+ <!-- libreria y demás dependencias-->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>

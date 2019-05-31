@@ -31,6 +31,8 @@ public class SalvoController {
 
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private ScoreRepository scoreRepository;
 
 
 
@@ -156,25 +158,22 @@ public class SalvoController {
         }
 
 
-      /*  if(gamePlayer.get().getShips().size() == 0){
+      /*if(gamePlayer.get().getShips().size() == 0){
             return new ResponseEntity<>(makeMap("error", "debe ingresar ships"), HttpStatus.FORBIDDEN);
-        }
+        }*/
 
-        */
-        ///
-       String estadoActual = gamePlayer.get().getEstadoGame();
-       if(estadoActual == "GANADO" || estadoActual == "EMPATE" || estadoActual == "PERDIDO"){
-            return new ResponseEntity<>(makeMap("error", "el juego termino"), HttpStatus.FORBIDDEN);
-        }
+      String estadoActual = gamePlayer.get().getEstadoGame();
+      if(estadoActual == "GANADO" || estadoActual == "EMPATE" || estadoActual == "PERDIDO"){
+        return new ResponseEntity<>(makeMap("error", "el juego termino"), HttpStatus.FORBIDDEN);
+      }
 
-
-        if (salvo.getLocations().size() > 5){
+      if (salvo.getLocations().size() > 5){
             return new ResponseEntity<>(makeMap("error", "cantidad de disparos no permitido"), HttpStatus.FORBIDDEN);
-        }
+      }
 
-        if(gamePlayer.get().getOpponent() == null){
+      if(gamePlayer.get().getOpponent() == null){
             return new ResponseEntity<>(makeMap("error", "no puedes disparar porque no hay enemigo"), HttpStatus.FORBIDDEN);
-        }
+      }
 
        Salvo salvoTurno = gamePlayer.get().getOpponent().getSalvoes().stream().sorted(Comparator.comparing(Salvo::getTurn).reversed()).findFirst().orElse(null);
        salvo.setTurn(gamePlayer.get().getSalvoes().size()+ 1);
@@ -195,6 +194,30 @@ public class SalvoController {
 
         gamePlayer.get().addSalvo(salvo);
         gamePlayerRepository.save(gamePlayer.get());
+
+
+        estadoActual = gamePlayer.get().getEstadoGame();
+        if(estadoActual == "GANADO"){
+            Score score = new Score(LocalDateTime.now(), gamePlayer.get().getPlayer(), gamePlayer.get().getGame(),1);
+            Score scoreOponente = new Score(LocalDateTime.now(), gamePlayer.get().getOpponent().getPlayer(), gamePlayer.get().getOpponent().getGame(),0);
+            scoreRepository.save(score);
+            scoreRepository.save(scoreOponente);
+
+
+        }
+        if(estadoActual =="PERDIDO"){
+            Score score = new Score(LocalDateTime.now(), gamePlayer.get().getPlayer(), gamePlayer.get().getGame(),0);
+            Score scoreOponente = new Score(LocalDateTime.now(), gamePlayer.get().getOpponent().getPlayer(), gamePlayer.get().getOpponent().getGame(),1);
+            scoreRepository.save(score);
+            scoreRepository.save(scoreOponente);
+        }
+        if(estadoActual == "EMPATE") {
+            Score score = new Score(LocalDateTime.now(), gamePlayer.get().getPlayer(), gamePlayer.get().getGame(), 0.5);
+            Score scoreOponente = new Score(LocalDateTime.now(), gamePlayer.get().getOpponent().getPlayer(), gamePlayer.get().getOpponent().getGame(),0.5);
+            scoreRepository.save(score);
+            scoreRepository.save(scoreOponente);
+        }
+
         return new ResponseEntity<>(makeMap("salvos", "agregadas"), HttpStatus.CREATED);
 
 
@@ -241,4 +264,8 @@ public class SalvoController {
         dto2.put("num", num+1);
         lista.add(dto2);
         return lista;
+
+
+        // para ordenar pero lo ordeno en el DTO....
+          gamePlayer.get().getSalvoes().stream().sorted(Comparator.comparing(Salvo::getTurn)).collect(toList());
     }*/

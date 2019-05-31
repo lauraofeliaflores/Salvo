@@ -37,7 +37,7 @@ public class Game {
         dto.put("created", this.fechaActual);
         dto.put("gamePlayers",this.gamePlayers.stream().map(GamePlayer::toDTO).collect(toList()));
         ///dudas nose como agregar score y finishDate!!!!!
-       // dto.put("score",this.getGamePlayers().stream().map(::toDTO).collect(toList()));
+        //dto.put("score",this.scores.stream().map(Score::toDTO).collect(toList()));
        // dto.put("finishDate",this.getGamePlayers().stream().map(Score::toDTO).collect(toList()));
 
         return dto;

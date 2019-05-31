@@ -24,7 +24,7 @@ public class GamePlayer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game_id")
     private Game game;
-  //  private String estado;
+
 
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ship> ships = new HashSet<>();
@@ -84,7 +84,7 @@ public class GamePlayer {
         dto.put("created", this.game.getFechaActual());
         dto.put("gamePlayers", this.game.getGamePlayers().stream().map(GamePlayer::toDTO));
         dto.put("Ships", this.getShips().stream().map(Ship::shipDTO));
-        dto.put("salvoes", this.game.getGamePlayers().stream().flatMap(gamePlayer -> gamePlayer.getSalvoes().stream().map(Salvo::salvoDTO)));
+        dto.put("salvoes", this.game.getGamePlayers().stream().flatMap(gamePlayer -> gamePlayer.getSalvoes().stream().sorted(Comparator.comparing(Salvo::getTurn)).map(Salvo::salvoDTO)));
         dto.put("estadoGame",this.getEstadoGame());
         return dto;
     }
@@ -139,14 +139,14 @@ public class GamePlayer {
                 if (ultimoSalvo.isPresent() && ultimoSalvoOponente.isPresent()) {
                     //si estan en el mismo turno verificar si alguien ganó
                     if (ultimoSalvo.get().getTurn() == ultimoSalvoOponente.get().getTurn()) {
-                        if ((ultimoSalvo.get().getSink().size() == this.getShips().size()) && (ultimoSalvoOponente.get().getSink().size() < this.getShips().size())) {
+                        if ((ultimoSalvo.get().getSink().size() == this.getOpponent().getShips().size()) && (ultimoSalvoOponente.get().getSink().size() < this.getShips().size())) {
                             estado = "GANADO";
 
                         }
-                        if ((ultimoSalvo.get().getSink().size() < this.getShips().size()) && (ultimoSalvoOponente.get().getSink().size() == this.getShips().size())) {
+                        if ((ultimoSalvo.get().getSink().size() < this.getOpponent().getShips().size()) && (ultimoSalvoOponente.get().getSink().size() == this.getShips().size())) {
                             estado = "PERDIDO";
                         }
-                        if ((ultimoSalvo.get().getSink().size() == this.getShips().size()) && (ultimoSalvoOponente.get().getSink().size() == this.getShips().size())) {
+                        if ((ultimoSalvo.get().getSink().size() == this.getOpponent().getShips().size()) && (ultimoSalvoOponente.get().getSink().size() == this.getShips().size())) {
                             estado = "EMPATE";
                         }
                     }

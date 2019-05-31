@@ -1,41 +1,207 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html"
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
 <meta charset="utf-8">
 <head>
+
+    <link rel="stylesheet" href="dist/normalize.css" />
+    <link rel="stylesheet" href="dist/style.css" />
+    <link rel="stylesheet" href="cssGames/estiloGames.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+
+    <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, max-age=0, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="cssGames/estiloGames.css">
     <title>Salvo</title>
+    <style type="text/css">
+  * { padding:0; margin:0; }
+  body, html {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+
+  }
+  body {
+      font-family:Arial, sans-serif;
+      font-size:12px;
+      background: #F5D1E3 url(sky-404.png) repeat-x 0 0;
+      overflow-x:hidden;
+      position: relative;
+  }
+
+  h1,h2,h3,h4,h5,h6,input,select,option,textarea {
+      font-size:12px;
+      font-family:Arial, sans-serif;
+  }
+  a {
+      text-decoration:none;
+      color:#69f;
+      outline:none;
+  }
+
+  h1 {
+      font-size:24px;
+      line-height: 1.1em;
+      margin-bottom: 15px;
+      font-weight: normal;
+  }
+   p {
+      font-size:14px;
+      line-height:1.2em;
+  }
+
+
+
+  #ripple {
+    position: relative;
+    z-index:2;
+    width: 100%;
+    margin-bottom: -5px;
+  }
+
+  div#ripple {
+      position: absolute;
+      top: 325px;
+      background-color: #68A8DC;
+      bottom: 5px;
+      min-height: 400px;
+      opacity: .7;
+      left: 0px;
+  }
+  canvas#ripple {
+      height: 100%;
+  }
+
+  #fish {
+    position: absolute;
+    left: 60%;
+    top: 225px;
+    z-index:1;
+  }
+
+  #text {
+      position: absolute;
+      top: 60%;
+      left: 100px;
+      z-index: 5;
+  }
+
+  #cloud1 {
+      position: absolute;
+      top: 50px;
+      width: 189px;
+      height: 88px;
+      left: 50px;
+      background: transparent url(cloud1-404.png) no-repeat scroll 0 0;
+  }
+  #cloud2 {
+      position: absolute;
+      top: 220px;
+      width: 69px;
+      height: 29px;
+      left: 275px;
+      background: transparent url(cloud2-404.png) no-repeat scroll 0 0;
+  }
+  #gull {
+      position: absolute;
+      top: 150px;
+      left: 75px;
+      margin-top: 10px;
+  }
+
+  .bottomLinkList {
+      position: absolute;
+      bottom:5px;
+      height: 30px;
+      line-height: 30px;
+      left: 50%;
+      margin-left: -275px;
+      width: 550px;
+      z-index: 500;
+      text-align: center;
+  }
+
+  .bottomLinkList li {
+      list-style-type: none;
+      float: left;
+      width: 100px;
+      color: #FFF;
+      height: 30px;
+  }
+
+  .bottomLinkList li a {
+      display: block;
+      color: #FFF;
+  }
+
+  .copy {
+      margin-top: -4px;
+  }
+  .tm {
+      vertical-align: super;
+      font-size: 10px;
+  }
+
+  </style>
 </head>
 <body>
-
-
-<div id="login-form">
-    <form v-show="!currentUser"  @submit.prevent="login">
-        <label>Name: <input type="text" name="email" v-model="email"></label>
-        <label>Password: <input type="password" name="password" v-model="password"></label>
-        <button type="text">login</button>
-        <label v-show="error" style="display:none">Usuario y/o contraseña incorrectos</label>
+<div id="login-form" >
+    <form class="emailStyle" v-show="!currentUser"  @submit.prevent="login">
+        <span class ="emailStyle">Name: <input  class="emailStyle" type="text" name="email" v-model="email"></span>
+        <span>Password: <input type="password" name="password" v-model="password"></span>
+        <button class="botonLoginStyle" type="text">login</button>
+        <span class="emailStyle" v-show="error" style="display:none">Usuario y/o contraseña incorrectos</span>
         <a href="../web/register.html">Registrarse</a>
     </form>
     <form v-show="currentUser"  @submit.prevent="logout" style="display:none">
-        <label>{{currentUser}}</label>
-        <button type="submit">logout</button>
+        <span class="emailStyle">{{currentUser}}</span>
+        <button class="botonLoginStyle" type="submit">logout</button>
     </form>
 </div>
+<div id="ripple-control" class="general">
 
-<div id="appVue">
-    <div class="row">
-        <div class="col-sm-8">
-            <h4 class="font-weight-bold">Tabla de Clasificación</h4>
-            <table id="data" class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Total</th>
-                    <th>Victorias</th>
-                    <th>Derrotas</th>
-                    <th>Empates</th>
-                </tr>
-                </thead>
-                <tbody>
+
+        <div id="appVue">
+            <button class="botonStyle" v-if="currentUser" v-on:click="crearJuego()">Create Game</button>
+            <div class=" infoListPosition">
+                <ol class="list-group">
+                    <li class="list-group-item list-group-item-action list-group-item-danger" v-for="game in lists" >
+                        Id: {{ game.id }}
+                        createdDate: {{ game.created  }}
+                        <button class="botonVolverStyle" v-if="currentUser && hayLugarEnElJuegoYNoEstaElUsuarioActual(game)" v-on:click="unirteAlJuego(game.id)">Unirte al juego</button>
+                        <button class="botonVolverStyle" v-if="currentUser && obtenerGamePlayerParaUsuarioActual(game)" v-on:click="returnToGame(game)">Volver al juego</button>
+                        <br>
+                        <!--  Game Players:-->
+                        <ol class="list-group">
+                            <li class="list-group-item list-group-item list-group-item-action list-group-item-warning" v-for="gamePlayer in game.gamePlayers" >
+                                Player: {{ gamePlayer.player.id }}
+                                Email: {{ gamePlayer.player.email }}
+                                FinishDate: {{ gamePlayer.player.finishDate }}
+                            </li>
+                        </ol>
+                        <br>
+                    </li>
+                </ol>
+            </div>
+            <div class ="infoTablePosition">
+
+                <h4 class="font-weight-bold tituloTabla">Tabla de Clasificación</h4>
+                <table id="data" class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Total</th>
+                        <th>Victorias</th>
+                        <th>Derrotas</th>
+                        <th>Empates</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <tr v-for="score in scores ">
                         <td>{{score.name}}</td>
                         <td>{{score.total}}</td>
@@ -43,57 +209,222 @@
                         <td>{{score.derrotas}}</td>
                         <td>{{score.empates}}</td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-    </div>
-
-
-    <ol class="list-group">
-        <button  v-if="currentUser" v-on:click="crearJuego()">Create Game</button>
-        <li class="list-group-item" v-for="game in lists" >
-            Id:{{ game.id }}
-            createdDate:{{ game.created  }}
-                <button v-if="currentUser && hayLugarEnElJuegoYNoEstaElUsuarioActual(game)" v-on:click="unirteAlJuego(game.id)">Unirte al juego</button>
-                <button v-if="currentUser && obtenerGamePlayerParaUsuarioActual(game)" v-on:click="returnToGame(game)">Volver al juego</button>
-                <br>
-            Game Players:
-            <ol class="list-group">
-                <li class="list-group-item" v-for="gamePlayer in game.gamePlayers" >
-
-                    Player:{{ gamePlayer.player.id }}
-                    Email:{{ gamePlayer.player.email }}
-                    FinishDate:{{ gamePlayer.player.finishDate }}
-
-
-                </li>
-            </ol>
-            <br>
-        </li>
-    </ol>
-  <!--  <div class="col-xs-12">
-        <hr>
-        <pre>
-            {{ $data }}
-        </pre>
-    </div>-->
 
 </div>
 
+
+<img id="fish" src="fish-404.png" style="top: -9999px; left: -9999px;">
+
+<div id="cloud1" style="left: 1414px;" > <h2 style="font-size:3rem "> Battleship </h2></div>
+<div id="cloud2" style="left: 267px;"></div>
+<img id="gull" src="gulls-404.png" style="top: -9999px; left: -9999px;">
 <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1/dist/vue-resource.min.js"></script>
-
-
-
-
 <script src="games.js"></script>
+
+<script type="text/javascript">
+    (function() {
+        function F() {
+            if (g.getContext) {
+                var a, b = a = 0;
+                if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight))
+                    a = document.documentElement.clientWidth,
+                    b = document.documentElement.clientHeight;
+                if (document.body && (document.body.clientWidth || document.body.clientHeight))
+                    a = Math.max(a, document.body.clientWidth),
+                    b = Math.max(b, document.body.clientHeight);
+                a = [a, b];
+                e = a[1];
+                d = a[0] + 1;
+                r = Math.floor(0.5 * e);
+                i = e - r;
+                j = i - G;
+                g.setAttribute("width", d);
+                g.setAttribute("height", e);
+                g.style.width = d + "px";
+                g.style.height = e + "px";
+                s = [Math.floor(0.75 * d), 0];
+                c = g.getContext("2d");
+                c.fillStyle = "rgba(104,168,220,.8)";
+                v()
+            }
+        }
+        function v() {
+            c.fillRect(0, i, d, e - j)
+        }
+        function m(a, b) {
+            if (!w)
+                k.style.top = "-9999px",
+                k.style.left = "-9999px",
+                c.clearRect(0, j, d, e - j);
+            c.clearRect(s[0], s[1] - 5, n[0], n[1]);
+            a = a || Math.floor(0.6 * d);
+            b = b || 0;
+            b += r - 0.5 * n[1];
+            c.drawImage(k, a, b, n[0], n[1]);
+            s = [a, b];
+            w || (v(),
+            w = !0)
+        }
+        function O() {
+            midPointY = Math.sin(h * 10 * P) * (o - h) * Q;
+            h <= o && (f[p] = [0, midPointY],
+            h % 9 == 0 && h % 2 == 1 && (f[z] = [-1, midPointY],
+            z++));
+            c.clearRect(0, j, d, e - j);
+            m(Math.floor(0.6 * d), h < o ? Math.floor(midPointY) : 0);
+            c.beginPath();
+            c.moveTo(0, i);
+            for (var a = [0, i], b = 0; b < t; b++)
+                if (f[b]) {
+                    b < p && (f[b][0] = f[b][0] * R - H,
+                    f[p - b + p] = [-f[b][0], f[b][1]]);
+                    var q = f[b][0] + I
+                      , A = f[b][1] + i;
+                    c.bezierCurveTo((q - a[0]) / 2 + a[0], a[1], q - (q - a[0]) / 2, A, q, A);
+                    a[0] = q;
+                    a[1] = A
+                }
+            c.lineTo(d, i);
+            c.lineTo(d, e);
+            c.lineTo(0, e);
+            c.closePath();
+            c.fill();
+            h++;
+            h == o && (B = !1);
+            h >= o * 2 && clearInterval(C)
+        }
+        function D(a, b) {
+            if (!J)
+                return !1;
+            b && c.clearRect(x, y, b.w, b.h);
+            a = a || E[0];
+            x = K[0];
+            y = K[1] + a.mt;
+            c.drawImage(l, Math.abs(a.l), Math.abs(a.t), a.w, a.h, x, y, a.w, a.h)
+        }
+        function S() {
+            var a = -1, b = 0, c = E.length, d;
+            clearInterval(L);
+            L = setInterval(function() {
+                b = ++a > c - 1 ? c * 2 - 2 - a : a;
+                d = E[b];
+                D(d, M);
+                M = d;
+                a >= c * 2 - 2 && (a = 0)
+            }, 200)
+        }
+        var u = function(a, b, c) {
+            var d = c
+              , c = function(b) {
+                d.call(a, b)
+            };
+            return a.attachEvent ? a.attachEvent("on" + b, c) : a.addEventListener(b, c, !1)
+        };
+        if (!window.getComputedStyle)
+            window.getComputedStyle = function(a) {
+                return a.currentStyle
+            }
+            ;
+        var t = 13, Q = 0.3, d = 960, e = 600, G = 30, r = Math.floor(0.5 * e), R = 1.01, H = 20, i = e - r, j = i - G, o = (t - 3) * 9, p = Math.floor(t / 2), I, g, c, C, B = !1, P = Math.PI / 180, f, z, h, k, s = [Math.floor(0.75 * d), 0], n = [236, 195], w, l, L, J, M, K = [75, 150], E = [{
+            h: 58,
+            w: 140,
+            t: 0,
+            l: 0,
+            mt: 10
+        }, {
+            h: 72,
+            w: 150,
+            t: -64,
+            l: 0,
+            mt: 0
+        }, {
+            h: 61,
+            w: 150,
+            t: -151,
+            l: 0,
+            mt: 30
+        }], N = !1;
+        g = document.createElement("canvas");
+        g.getContext && (N = !0,
+        //document.body.removeChild(document.getElementById("ripple")),
+        g.setAttribute("id", "ripple"),
+        document.body.appendChild(g),
+        k = document.getElementById("fish"),
+        l = document.getElementById("gull"),
+        l.setAttribute("src", "gulls-404.png"));
+        N && (function() {
+            try {
+                if (fish.complete)
+                    m();
+                else if (parseInt(getComputedStyle(k).height, 10))
+                    setTimeout(m, 1E3);
+                else
+                    throw "no fish";
+            } catch (a) {
+                u(k, "load", function() {
+                    m()
+                })
+            }
+            u(l, "load", function() {
+                J = !0;
+                l.style.top = "-9999px";
+                l.style.left = "-9999px";
+                D(0, 0);
+                S()
+            });
+            u(document.getElementById("ripple-control"), "mouseover", function(a) {
+                if (g.getContext && !B)
+                    clearInterval(C),
+                    p = Math.floor(t / 2),
+                    I = a.pageX,
+                    z = 1,
+                    h = 0,
+                    f = [],
+                    f[0] = [H, 0],
+                    C = setInterval(O, 30),
+                    B = !0
+            });
+            u(window, "resize", function() {
+                F();
+                m();
+                v();
+                D()
+            })
+        }(),
+        F());
+        (function() {
+            var a = 0
+              , b = document.getElementById("cloud1")
+              , c = document.getElementById("cloud2")
+              , e = parseInt(getComputedStyle(b).left, 10)
+              , f = parseInt(getComputedStyle(c).left, 10);
+            setInterval(function() {
+                if (++a == 2)
+                    a = 0,
+                    e += 1,
+                    b.style.left = e + "px";
+                f += 1;
+                c.style.left = f + "px";
+                e > d + 50 && (e = -200);
+                f > d + 50 && (f = -100)
+            }, 50)
+        }
+        )()
+    }
+    )();
+</script><canvas id="ripple" width="1367" height="625" style="width: 1367px; height: 625px;"></canvas>
 
 
 
 </body>
-
-
 
 </html>

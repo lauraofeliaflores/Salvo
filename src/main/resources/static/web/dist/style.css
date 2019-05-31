@@ -5,56 +5,68 @@
     cursor: -moz-grab;
     width: -webkit-fill-available!important;
     left: 0px !important;
+    top: 0px;
+    bottom: 1px !important;
+
 }
 
 .portaavionesHorizontal{
-    background-image: url('submarinehor.png');
-    background-size: contain;
+    background-image: url('../cssGames/barco1.png');
+    background-size: 100% 100%;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .portaavionesVertical{
-    background-image: url('submarinever.png');
-    background-size: contain;
+    background-image: url('../cssGames/barco1.png');
+    background-size:100% 100%;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .acorazadoHorizontal{
-    background-image: url('submarinehor.png');
-    background-size: contain;
+    background-image: url('../cssGames/barco2.png');
+    background-size: 100% 100%;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .acorazadoVertical{
-    background-image: url('submarinever.png');
-    background-size: contain;
+    background-image: url('../cssGames/barco2.png');
+    background-size: 100% 100%;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .submarinoHorizontal{
-  background-image: url('submarinehor.png');
-  background-size: contain;
+  background-image: url('../cssGames/barco3.png');
+  background-size: 100% 100%;
+  image-rendering: -webkit-optimize-contrast;
 }
 .submarinoVertical{
-   background-image: url('submarinever.png');
-   background-size: contain;
+   background-image: url('../cssGames/barco3.png');
+   background-size: 100% 100%;
+   image-rendering: -webkit-optimize-contrast;
 }
 .destructorHorizontal{
-  background-image: url('submarinehor.png');
-  background-size: contain;
+  background-image: url('../cssGames/barco4.png');
+  background-size: 100% 100%;
+  image-rendering: -webkit-optimize-contrast;
 }
 .destructorVertical{
-   background-image: url('submarinever.png');
-   background-size: contain;
+   background-image: url('../cssGames/barco4.png');
+   background-size: 100% 100%;
+   image-rendering: -webkit-optimize-contrast;
 }
 .botePatrullaHorizontal{
-  background-image: url('submarinehor.png');
-  background-size: contain;
+  background-image: url('../cssGames/barco5.png');
+  background-size: 100% 100%;
+  image-rendering: -webkit-optimize-contrast;
 }
 .botePatrullaVertical{
-   background-image: url('submarinever.png');
-   background-size: contain;
+   background-image: url('../cssGames/barco5.png');
+   background-size: 100%  100%;
 }
 
 
 .portaavionesportaavionesHorizontalHorizontalRed{
-    background-image: url('submarinehor_red.png');
+    background-image: url('../cssGames/barco1.png');
     background-size: 100% 100%;
 }
 
@@ -74,4 +86,26 @@
     padding-left: 42px;
     height: 452px;
     width: 452px;
+}
+.row{
+    background-image: url('../cssGames/imagenFondo5.jpg');
+}
+
+.botonAgregarShips{
+    font-family: sans-serif;
+    font-size: larger;
+    line-height: inherit;
+}
+.botonAgregarSalvos{
+    font-family: sans-serif;
+    font-size: larger;
+    line-height: inherit;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0rem;
+    font-size: x-large;
+    color: white;
+    font-family: -webkit-body;
 }
