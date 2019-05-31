@@ -118,7 +118,7 @@ app.gamePlayerId = paramObj(window.location.href).gp
 
 
 // Ajax a / api / game_view / nn
-var games = "http://localhost:8080/api/game_view/"+app.gamePlayerId;
+var games = "/api/game_view/"+app.gamePlayerId;
 
 
 fetch(games,{
